@@ -1,0 +1,31 @@
+:root {
+  --background: 0 0% 96%;
+  --foreground: 212 56% 10%;
+  --primary: 212 86% 44%;
+  --primary-foreground: 0 0% 100%;
+  --useful: 137 84% 31%;
+  --useful-foreground: 0 0% 100%;
+  --destructive: 357 76% 55%;
+  --destructive-foreground: 0 0% 100%;
+  --destructive-accent: 357 76% 64%;
+  --warning: 58 81% 43%;
+  --warning-foreground: 0 0% 100%;
+  --card: 0 0% 100%;
+  --accent: 212 69% 49%;
+  --muted: 213 9% 62%;
+  --border: 0 0% 87%;
+
+  --xl-fs: 1.5rem;
+  --lg-fs: 1.25rem;
+  --base-fs: 1rem;
+  --sm-fs: 0.875rem;
+  --v-sm-fs: 0.8125rem;
+  --xs-fs: 0.75rem;
+
+  --rounded: 20px;
+  --rounded-full: 9999px;
+
+  font-family: Manrope, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  line-height: 1.35;
+}
