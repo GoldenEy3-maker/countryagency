@@ -63,7 +63,7 @@
   background-color: transparent !important;
   border-radius: var(--rounded);
   margin-inline: 0.75rem;
-  bottom: var(--bottom, 5.125rem) !important;
+  bottom: var(--bottom, 5.5375rem) !important;
   transition: bottom 300ms ease;
 }
 
@@ -702,7 +702,6 @@ body:has(.drawer._dragging) [class*="-balloon_layout_panel"] {
   overflow: hidden;
   height: 100%;
   padding-bottom: 2rem;
-  overscroll-behavior: none;
 }
 
 .drawer[aria-expanded=true] .drawer-content {
@@ -842,17 +841,6 @@ body:has(.drawer._dragging) [class*="-balloon_layout_panel"] {
     padding-inline: 0.75rem;
     margin-bottom: 1.25rem;
   }
-
-  /* [class*="-balloon_layout_normal"] {
-    position: fixed !important;
-    top: auto !important;
-    left: 1rem !important;
-    right: 0;
-    bottom: 5rem;
-    width: 100%;
-    height: 130px;
-    margin-right: 1rem;
-  } */
 }
 
 /* SM Media */

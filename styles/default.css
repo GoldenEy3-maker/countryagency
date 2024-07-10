@@ -31,10 +31,8 @@ body {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeSpeed;
-}
 
-body[data-lock="true"] {
-  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 a,
