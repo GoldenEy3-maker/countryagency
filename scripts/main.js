@@ -74,6 +74,89 @@ function balloonTemplate(opts) {
   `;
 }
 
+// Drawer
+const drawer = document.querySelector("[data-drawer]");
+const drawerContent = document.querySelector("[data-drawer-content]");
+const header = document.getElementById("header");
+let balloonPanel = null;
+
+function updateBalloonPanelPositionBasedOnDrawerHeight(drawerHeight) {
+  if (
+    balloonPanel &&
+    ((drawerHeight >= 10 && drawerHeight < 65) ||
+      (drawerHeight <= 65 && drawerHeight > 10))
+  ) {
+    balloonPanel.style.setProperty(
+      "--bottom",
+      `calc(1rem + ${(drawerHeight * window.innerHeight) / 100 / 16}rem)`
+    );
+  }
+}
+
+let isOpen = false,
+  isDraggable = true,
+  startY,
+  startHeight;
+
+function openDrawer() {
+  isOpen = true;
+  updateDrawerHeight(65);
+  header.ariaHidden = false;
+  drawer.ariaExpanded = true;
+}
+
+function closeDrawer() {
+  isOpen = false;
+  updateDrawerHeight(10);
+  header.ariaHidden = true;
+  drawer.ariaExpanded = false;
+}
+
+function updateDrawerHeight(value) {
+  drawer.style.height = `${value}svh`;
+  updateBalloonPanelPositionBasedOnDrawerHeight(value);
+}
+
+function dragStart(event) {
+  if (!isDraggable) return;
+  startY = event.pageY || event.touches?.[0].pageY;
+  startHeight = parseInt(drawer.style.height);
+  drawer.classList.add("_dragging");
+  balloonPanel?.classList.add("_drawer-dragging");
+  document.addEventListener("mousemove", dragging);
+  document.addEventListener("mouseup", dragEnd);
+  document.addEventListener("touchmove", dragging);
+  document.addEventListener("touchend", dragEnd);
+}
+
+function dragging(event) {
+  const delta = startY - (event.pageY || event.touches?.[0].pageY);
+  const height = startHeight + (delta / window.innerHeight) * 100;
+  updateDrawerHeight(height);
+}
+
+function dragEnd() {
+  drawer.classList.remove("_dragging");
+  balloonPanel?.classList.remove("_drawer-dragging");
+  const height = parseInt(drawer.style.height);
+  if (height > 25 && !isOpen) openDrawer();
+  else if (height < 25 && !isOpen) closeDrawer();
+  else if (isOpen && height < 50) closeDrawer();
+  else if (isOpen && height > 50) openDrawer();
+  document.removeEventListener("mousemove", dragging);
+  document.removeEventListener("mouseup", dragEnd);
+  document.removeEventListener("touchmove", dragging);
+  document.removeEventListener("touchend", dragEnd);
+}
+
+updateDrawerHeight(10);
+drawer.addEventListener("mousedown", dragStart);
+drawer.addEventListener("touchstart", dragStart);
+drawerContent.addEventListener(
+  "scroll",
+  () => (isDraggable = drawerContent.scrollTop === 0)
+);
+
 // Ymaps
 function init() {
   const map = new ymaps.Map("map", {
@@ -121,9 +204,14 @@ function init() {
     mark.events.add("balloonclose", (e) =>
       e.get("target").options.set("iconImageHref", inactivePlacemark)
     );
-    mark.events.add("balloonopen", (e) =>
-      e.get("target").options.set("iconImageHref", activePlacemark)
-    );
+    mark.events.add("balloonopen", (e) => {
+      balloonPanel = document.querySelector("[class*='-balloon_layout_panel']");
+
+      updateBalloonPanelPositionBasedOnDrawerHeight(
+        parseInt(drawer.style.height)
+      );
+      e.get("target").options.set("iconImageHref", activePlacemark);
+    });
 
     window.addEventListener("resize", () =>
       mark.options.set(
@@ -156,83 +244,3 @@ if (goToMapBtn && map) {
 
   observer.observe(map);
 }
-
-// Drawer
-const drawer = document.querySelector("[data-drawer]");
-const drawerContent = document.querySelector("[data-drawer-content]");
-const header = document.getElementById("header");
-
-let isOpen = false,
-  isDraggable = true,
-  startY,
-  startHeight;
-
-function openDrawer() {
-  isOpen = true;
-  updateDrawerHeight(65);
-  header.ariaHidden = false;
-  drawer.ariaExpanded = true;
-}
-
-function closeDrawer() {
-  isOpen = false;
-  updateDrawerHeight(10);
-  header.ariaHidden = true;
-  drawer.ariaExpanded = false;
-}
-
-function updateDrawerHeight(value) {
-  const balloonLPanel = document.querySelector(
-    "[class*='-balloon_layout_panel']"
-  );
-
-  if (
-    balloonLPanel &&
-    ((value >= 10 && value < 65) || (value <= 65 && value > 10))
-  ) {
-    balloonLPanel.style.setProperty(
-      "--bottom",
-      `calc(1rem + ${(value * window.innerHeight) / 100 / 16}rem)`
-    );
-  }
-
-  drawer.style.height = `${value}svh`;
-}
-
-function dragStart(event) {
-  if (!isDraggable) return;
-  startY = event.pageY || event.touches?.[0].pageY;
-  startHeight = parseInt(drawer.style.height);
-  drawer.classList.add("_dragging");
-  document.addEventListener("mousemove", dragging);
-  document.addEventListener("mouseup", dragEnd);
-  document.addEventListener("touchmove", dragging);
-  document.addEventListener("touchend", dragEnd);
-}
-
-function dragging(event) {
-  const delta = startY - (event.pageY || event.touches?.[0].pageY);
-  const height = startHeight + (delta / window.innerHeight) * 100;
-  updateDrawerHeight(height);
-}
-
-function dragEnd() {
-  drawer.classList.remove("_dragging");
-  const height = parseInt(drawer.style.height);
-  if (height > 25 && !isOpen) openDrawer();
-  else if (height < 25 && !isOpen) closeDrawer();
-  else if (isOpen && height < 50) closeDrawer();
-  else if (isOpen && height > 50) openDrawer();
-  document.removeEventListener("mousemove", dragging);
-  document.removeEventListener("mouseup", dragEnd);
-  document.removeEventListener("touchmove", dragging);
-  document.removeEventListener("touchend", dragEnd);
-}
-
-updateDrawerHeight(10);
-drawer.addEventListener("mousedown", dragStart);
-drawer.addEventListener("touchstart", dragStart);
-drawerContent.addEventListener(
-  "scroll",
-  () => (isDraggable = drawerContent.scrollTop === 0)
-);

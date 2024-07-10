@@ -67,7 +67,7 @@
   transition: bottom 300ms ease;
 }
 
-body:has(.drawer._dragging) [class*="-balloon_layout_panel"] {
+[class*="-balloon_layout_panel"]._drawer-dragging {
   transition: none;
 }
 
