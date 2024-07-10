@@ -701,7 +701,7 @@ body:has(.drawer._dragging) [class*="-balloon_layout_panel"] {
   gap: 3rem;
   overflow: hidden;
   height: 100%;
-  padding-bottom: 2rem;
+  padding-bottom: 2.5rem;
 }
 
 .drawer[aria-expanded=true] .drawer-content {
