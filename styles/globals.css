@@ -661,11 +661,11 @@ body:has(.drawer._dragging) [class*="-balloon_layout_panel"] {
   bottom: -5rem;
   inset-inline: 0;
   z-index: 50;
-  height: 10vh;
+  height: 10svh;
   user-select: none;
   touch-action: none;
   min-height: 4.375rem;
-  max-height: 65vh;
+  max-height: 65svh;
   background-color: hsl(var(--card));
   border-top-left-radius: var(--rounded);
   border-top-right-radius: var(--rounded);
@@ -702,6 +702,7 @@ body:has(.drawer._dragging) [class*="-balloon_layout_panel"] {
   overflow: hidden;
   height: 100%;
   padding-bottom: 2rem;
+  overscroll-behavior: none;
 }
 
 .drawer[aria-expanded=true] .drawer-content {

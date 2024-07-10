@@ -196,7 +196,7 @@ function updateDrawerHeight(value) {
     );
   }
 
-  drawer.style.height = `${value}vh`;
+  drawer.style.height = `${value}svh`;
 }
 
 function dragStart(event) {
