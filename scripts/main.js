@@ -9,6 +9,36 @@ const swiper = new Swiper(".swiper", {
 });
 
 // Consts
+const PLACEMARKS_DATA = [
+  {
+    geometry: [53.35428168946139, 83.77769665272446],
+    balloon: {
+      img: "assets/balloon_photo1.jpg",
+      href: "#",
+      hotel: "Гостиница 3*",
+      title: "Отель на Земле имени Кленова Владислава",
+      rating: 4.9,
+      reviews: "121 отзыв",
+      period: "За 5 ночей и 2 гостя",
+      price: "6 000 ₽",
+    },
+  },
+  {
+    geometry: [53.35304921500627, 83.77941326649402],
+    balloon: {
+      img: "assets/balloon_photo1.jpg",
+      href: "#",
+      hotel: "Гостиница 2*",
+      title: "BAST Apart Grey Manufaktura Centrum Miasta Legionów 18",
+      rating: 4.9,
+      reviews: "121 отзыв",
+      period: "За 5 ночей",
+      price: "6 000 ₽",
+      discount: "8 000 ₽",
+    },
+  },
+];
+
 const inactivePlacemark =
   "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHZpZXdCb3g9IjAgMCAyMiAyMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgZmlsdGVyPSJ1cmwoI2ZpbHRlcjBfZF8wXzE4KSI+CjxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjciIGZpbGw9IndoaXRlIi8+CjxjaXJjbGUgY3g9IjExIiBjeT0iMTEiIHI9IjYuNSIgc3Ryb2tlPSIjMEY2N0NGIi8+CjwvZz4KPGRlZnM+CjxmaWx0ZXIgaWQ9ImZpbHRlcjBfZF8wXzE4IiB4PSIwIiB5PSIwIiB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIGZpbHRlclVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj4KPGZlRmxvb2QgZmxvb2Qtb3BhY2l0eT0iMCIgcmVzdWx0PSJCYWNrZ3JvdW5kSW1hZ2VGaXgiLz4KPGZlQ29sb3JNYXRyaXggaW49IlNvdXJjZUFscGhhIiB0eXBlPSJtYXRyaXgiIHZhbHVlcz0iMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMTI3IDAiIHJlc3VsdD0iaGFyZEFscGhhIi8+CjxmZU9mZnNldC8+CjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjIiLz4KPGZlQ29tcG9zaXRlIGluMj0iaGFyZEFscGhhIiBvcGVyYXRvcj0ib3V0Ii8+CjxmZUNvbG9yTWF0cml4IHR5cGU9Im1hdHJpeCIgdmFsdWVzPSIwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwLjEgMCIvPgo8ZmVCbGVuZCBtb2RlPSJub3JtYWwiIGluMj0iQmFja2dyb3VuZEltYWdlRml4IiByZXN1bHQ9ImVmZmVjdDFfZHJvcFNoYWRvd18wXzE4Ii8+CjxmZUJsZW5kIG1vZGU9Im5vcm1hbCIgaW49IlNvdXJjZUdyYXBoaWMiIGluMj0iZWZmZWN0MV9kcm9wU2hhZG93XzBfMTgiIHJlc3VsdD0ic2hhcGUiLz4KPC9maWx0ZXI+CjwvZGVmcz4KPC9zdmc+Cg==";
 const activePlacemark =
@@ -30,7 +60,14 @@ function balloonTemplate(opts) {
             </div>
             <div class="balloon-pricing">
               <p>${opts.period}</p>
-              <span>${opts.price}</span>
+              <div class="balloon-pricing-wrapper">
+                <span>${opts.price}</span>
+                ${
+                  opts.discount
+                    ? `<span class="balloon-pricing__discoung">${opts.discount}</span>`
+                    : ""
+                }
+              </div>
             </div>
           </div>
         </div>
@@ -44,103 +81,158 @@ function init() {
     zoom: 15,
   });
 
-  const firstPlacemark = new ymaps.Placemark(
-    [53.35428168946139, 83.77769665272446],
-    {
-      balloonContent: balloonTemplate({
-        img: "assets/balloon_photo1.jpg",
-        href: "#",
-        hotel: "Гостиница 3*",
-        title: "Отель на Земле имени Кленова Владислава",
-        rating: 4.9,
-        reviews: "121 отзыв",
-        period: "За 5 ночей и 2 гостя",
-        price: "6 000 ₽",
-      }),
-    },
-    {
-      iconLayout: "default#image",
-      iconImageHref: inactivePlacemark,
-      iconImageSize: [14, 14],
-      iconImageOffset: [-10, -2],
-      hideIconOnBalloonOpen: false,
-      balloonCloseButton: false,
-      balloonOffset: [-160, 0],
-      balloonAutoPanMargin: 15,
-    }
-  );
-  const secondPlacemark = new ymaps.Placemark(
-    [53.35304921500627, 83.77941326649402],
-    {
-      balloonContent: balloonTemplate({
-        img: "assets/balloon_photo1.jpg",
-        href: "#",
-        hotel: "Гостиница 3*",
-        title: "Отель на Земле имени Кленова Владислава",
-        rating: 4.9,
-        reviews: "121 отзыв",
-        period: "За 5 ночей и 2 гостя",
-        price: "6 000 ₽",
-      }),
-    },
-    {
-      iconLayout: "default#image",
-      iconImageHref: inactivePlacemark,
-      iconImageSize: [14, 14],
-      iconImageOffset: [-10, -2],
-      hideIconOnBalloonOpen: false,
-      balloonCloseButton: false,
-      balloonOffset: [-160, 0],
-      balloonAutoPanMargin: 15,
-    }
+  const placemarks = PLACEMARKS_DATA.map(
+    (data) =>
+      new ymaps.Placemark(
+        data.geometry,
+        {
+          balloonContent: balloonTemplate(data.balloon),
+        },
+        {
+          iconLayout: "default#image",
+          iconImageHref: inactivePlacemark,
+          iconImageSize: [20, 20],
+          iconImageOffset: [-10, -10],
+          hideIconOnBalloonOpen: false,
+          balloonCloseButton: false,
+          balloonOffset: [-160, 0],
+          balloonAutoPanMargin: 15,
+          balloonPanelMaxMapArea: matchMedia("(max-width: 768px)").matches
+            ? Infinity
+            : 0,
+        }
+      )
   );
 
-  firstPlacemark.events.add("balloonopen", (e) =>
-    e.get("target").options.set("iconImageHref", activePlacemark)
-  );
-  firstPlacemark.events.add("balloonclose", (e) =>
-    e.get("target").options.set("iconImageHref", inactivePlacemark)
-  );
-  secondPlacemark.events.add("balloonopen", (e) =>
-    e.get("target").options.set("iconImageHref", activePlacemark)
-  );
-  secondPlacemark.events.add("balloonclose", (e) =>
-    e.get("target").options.set("iconImageHref", inactivePlacemark)
-  );
+  // Close Balloon onMapClick
+  map.events.add("click", () => map.balloon.close());
 
-  map.controls.remove("geolocationControl"); // удаляем геолокацию
-  map.controls.remove("searchControl"); // удаляем поиск
-  map.controls.remove("trafficControl"); // удаляем контроль трафика
-  map.controls.remove("typeSelector"); // удаляем тип
-  map.controls.remove("fullscreenControl"); // удаляем кнопку перехода в полноэкранный режим
-  map.controls.remove("zoomControl"); // удаляем контрол зуммирования
-  map.controls.remove("rulerControl"); // удаляем контрол правил
-  // map.behaviors.disable(["scrollZoom"]); // отключаем скролл карты (опционально)
+  map.controls.remove("geolocationControl");
+  map.controls.remove("searchControl");
+  map.controls.remove("trafficControl");
+  map.controls.remove("typeSelector");
+  map.controls.remove("fullscreenControl");
+  map.controls.remove("zoomControl");
+  map.controls.remove("rulerControl");
+  // map.behaviors.disable(["scrollZoom"]);
 
-  map.geoObjects.add(firstPlacemark);
-  map.geoObjects.add(secondPlacemark);
+  placemarks.forEach((mark) => {
+    // Toggle iconImageHref
+    mark.events.add("balloonclose", (e) =>
+      e.get("target").options.set("iconImageHref", inactivePlacemark)
+    );
+    mark.events.add("balloonopen", (e) =>
+      e.get("target").options.set("iconImageHref", activePlacemark)
+    );
+
+    window.addEventListener("resize", () =>
+      mark.options.set(
+        "balloonPanelMaxMapArea",
+        matchMedia("(max-width: 768px)").matches ? Infinity : 0
+      )
+    );
+
+    // Add placemarks on the map
+    map.geoObjects.add(mark);
+  });
 }
 
 ymaps.ready(init);
 
 // Go To Map
-
 const goToMapBtn = document.querySelector("[data-go-to-map]");
 const map = document.getElementById("map");
 
-const observer = new IntersectionObserver((entries) => {
-  for (const entry of entries) {
-    goToMapBtn.ariaHidden = entry.isIntersecting;
-  }
-});
+if (goToMapBtn && map) {
+  const observer = new IntersectionObserver((entries) =>
+    entries.forEach((entry) => (goToMapBtn.ariaHidden = entry.isIntersecting))
+  );
 
-if (goToMapBtn) {
   goToMapBtn.addEventListener("click", () => {
-    window.scrollTo({
-      top: document.body.scrollHeight,
+    map.scrollIntoView({
       behavior: "smooth",
     });
   });
 
   observer.observe(map);
 }
+
+// Drawer
+const drawer = document.querySelector("[data-drawer]");
+const drawerContent = document.querySelector("[data-drawer-content]");
+const header = document.getElementById("header");
+
+let isOpen = false,
+  isDraggable = true,
+  startY,
+  startHeight;
+
+function openDrawer() {
+  isOpen = true;
+  updateDrawerHeight(65);
+  header.ariaHidden = false;
+  drawer.ariaExpanded = true;
+}
+
+function closeDrawer() {
+  isOpen = false;
+  updateDrawerHeight(10);
+  header.ariaHidden = true;
+  drawer.ariaExpanded = false;
+}
+
+function updateDrawerHeight(value) {
+  const balloonLPanel = document.querySelector(
+    "[class*='-balloon_layout_panel']"
+  );
+
+  if (
+    balloonLPanel &&
+    ((value >= 10 && value < 65) || (value <= 65 && value > 10))
+  ) {
+    balloonLPanel.style.setProperty(
+      "--bottom",
+      `calc(1rem + ${(value * window.innerHeight) / 100 / 16}rem)`
+    );
+  }
+
+  drawer.style.height = `${value}vh`;
+}
+
+function dragStart(event) {
+  if (!isDraggable) return;
+  startY = event.pageY || event.touches?.[0].pageY;
+  startHeight = parseInt(drawer.style.height);
+  drawer.classList.add("_dragging");
+  document.addEventListener("mousemove", dragging);
+  document.addEventListener("mouseup", dragEnd);
+  document.addEventListener("touchmove", dragging);
+  document.addEventListener("touchend", dragEnd);
+}
+
+function dragging(event) {
+  const delta = startY - (event.pageY || event.touches?.[0].pageY);
+  const height = startHeight + (delta / window.innerHeight) * 100;
+  updateDrawerHeight(height);
+}
+
+function dragEnd() {
+  drawer.classList.remove("_dragging");
+  const height = parseInt(drawer.style.height);
+  if (height > 25 && !isOpen) openDrawer();
+  else if (height < 25 && !isOpen) closeDrawer();
+  else if (isOpen && height < 50) closeDrawer();
+  else if (isOpen && height > 50) openDrawer();
+  document.removeEventListener("mousemove", dragging);
+  document.removeEventListener("mouseup", dragEnd);
+  document.removeEventListener("touchmove", dragging);
+  document.removeEventListener("touchend", dragEnd);
+}
+
+updateDrawerHeight(10);
+drawer.addEventListener("mousedown", dragStart);
+drawer.addEventListener("touchstart", dragStart);
+drawerContent.addEventListener(
+  "scroll",
+  () => (isDraggable = drawerContent.scrollTop === 0)
+);

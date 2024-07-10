@@ -3,15 +3,16 @@
   --foreground: 212 56% 10%;
   --primary: 212 86% 44%;
   --primary-foreground: 0 0% 100%;
+  --primary-accent: 212 84% 38%;
+  --secondary: 0 0% 87%;
   --useful: 137 84% 31%;
   --useful-foreground: 0 0% 100%;
   --destructive: 357 76% 55%;
   --destructive-foreground: 0 0% 100%;
-  --destructive-accent: 357 76% 64%;
+  --destructive-accent: 357 73% 48%;
   --warning: 58 81% 43%;
   --warning-foreground: 0 0% 100%;
   --card: 0 0% 100%;
-  --accent: 212 69% 49%;
   --muted: 213 9% 62%;
   --border: 0 0% 87%;
 
@@ -25,7 +26,6 @@
   --rounded: 20px;
   --rounded-full: 9999px;
 
-  font-family: Manrope, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: Manrope, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   line-height: 1.35;
 }
