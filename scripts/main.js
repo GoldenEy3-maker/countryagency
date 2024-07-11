@@ -211,9 +211,10 @@ function init() {
 
   placemarks.forEach((mark) => {
     // Toggle iconImageHref
-    mark.events.add("balloonclose", (e) =>
-      e.get("target").options.set("iconImageHref", inactivePlacemark)
-    );
+    mark.events.add("balloonclose", (e) => {
+      balloonPanel = null;
+      e.get("target").options.set("iconImageHref", inactivePlacemark);
+    });
     mark.events.add("balloonopen", (e) => {
       balloonPanel = document.querySelector("[class*='-balloon_layout_panel']");
 
